@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Show";
+}
+
+<h1>@ViewBag.Subject.Title</h1>
+<p>@ViewBag.Subject.Content</p>
+<p>@ViewBag.Subject.Data</p>
+<br />
+<a href="/Subjects/Edit/@ViewBag.Subject.SubjectId">Modifica subiectul</a>
+<form method="post" action="/Subjects/Delete/@ViewBag.Subject.SubjectId">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+    <button type="submit">Sterge subiectul</button>
+</form>
+<hr />
+<a href="/Subjects/Index">Inapoi la lista subiectelor</a>
+<br />

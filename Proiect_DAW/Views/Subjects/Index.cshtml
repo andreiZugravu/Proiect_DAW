@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@foreach (var subject in ViewBag.Subjects)
+{
+    <p>@subject.Title</p>
+    <p>@subject.Content</p>
+    <p>@subject.Data</p>
+    <p>@subject.Category.Name</p>
+    <a href="/Subjects/Show/@subject.SubjectId">Afisare subiect de discutie</a>
+    <br />
+    <hr />
+    <br />
+}
+<a href="/Subjects/New">Adauga alt subiect de discutie</a>
+<br />

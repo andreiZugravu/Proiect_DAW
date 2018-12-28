@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form method="post" action="/Subjects/Edit/@ViewBag.Subject.SubjectId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label for="Title">Title</label>
+    <br />
+    <input type="text" name="Title" value="@ViewBag.Subject.Title" />
+    <br /><br />
+    <label for="Content">Content</label>
+    <br />
+    <input type="text" name="Content" value="@ViewBag.Subject.Content" />
+    <br />
+
+    <button type="submit">Modifica subiectul</button>
+</form>
