@@ -22,3 +22,21 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* ADDED MANUALLY */
+.display-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.display-table .td-icon {
+    width: 10%;
+}
+
+.display-table .td-details {
+    width: 70%;
+}
+
+.display-table .td-statistics {
+    width: 20%;
+}

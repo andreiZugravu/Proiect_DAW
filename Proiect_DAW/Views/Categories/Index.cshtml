@@ -1,4 +1,8 @@
-﻿
+﻿@model PagedList.IPagedList<Proiect_DAW.Models.Category>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
 @{
     ViewBag.Title = "Index";
 }
@@ -7,10 +11,42 @@
 
 @foreach (var category in ViewBag.Categories)
 {
-    <a href="/Categories/Show/@category.CategoryId">@category.Name</a>
-    
-    <br />
-    <hr />
+    <h3>
+        <!--<a class="toggle right" href="#" title="Toggle Soft Related / OS">Toggle Soft Related / OS</a> <span class="glyph">▶</span> --> 
+        <a href="/Categories/Show/@category.CategoryId" title="View subjects in this category">@category.Name</a>
+    </h3>
+    int nrSubjects = 0;
+    int limit = 5;
+    <table class="display-table">
+        <tbody>
+            @foreach (var subject in category.Subjects)
+            {
+                nrSubjects = nrSubjects + 1;
+                if (nrSubjects > limit)
+                { break; }
+                int contentLimit = 50;
+                string subjectContentDisplay = subject.Content;
+                if (subjectContentDisplay.Length > contentLimit)
+                {
+                    subjectContentDisplay = subject.Content.Substring(0, contentLimit);
+                    subjectContentDisplay = subjectContentDisplay + "...";
+                }
+                <tr>
+                    <td class="td-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
+                    </td>
+                    <td class="td-details">
+                        <h1>@subject.Title</h1>
+                        <p>@subjectContentDisplay</p>
+                        <p>Owner: <b>TODO</b></p>
+                    </td>
+                    <td class="td-statistics">
+                        <p>X vizualizari si raspunsuri - TODO</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
     <br />
 }
 <a href="/Categories/New">Adauga alta categorie</a>
