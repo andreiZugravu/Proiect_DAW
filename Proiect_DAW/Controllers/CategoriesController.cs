@@ -7,45 +7,45 @@ using Proiect_DAW.Models;
 
 namespace Proiect_DAW.Controllers
 {
-    public class SubjectsController : Controller
+    public class CategoriesController : Controller
     {
         private SubjectDBContext db = new SubjectDBContext();
 
         public ActionResult Index()
         {
-            /*//de creat rapid prima data, ca sa creeze tabelul
-            Categorie categorie = new Categorie();
-            categorie.Nume = "Test";
-            db.Categorii.Add(categorie);
-            db.SaveChanges();
-            */
+            var categories = from category in db.Categories
+                             orderby category.Name
+                             select category;
+            ViewBag.Categories = categories;
+
             var subjects = from subject in db.Subjects
-                           orderby subject.Title
+                           orderby subject.CategoryId
                            select subject;
             ViewBag.Subjects = subjects;
+
             return View();
         }
 
         public ActionResult Show(int id)
         {
-            Subject subject = db.Subjects.Find(id);
-            ViewBag.Subject = subject;
+            Category category = db.Categories.Find(id);
+            ViewBag.Category = category;
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult New()
         {
-            ViewBag.CategoriesIds = db.Categories;
             return View();
         }
 
         [HttpPost]
-        public ActionResult New(Subject subject)
+        [Authorize(Roles = "Administrator")]
+        public ActionResult New(Category category)
         {
             try
             {
-                subject.Data = System.DateTime.Now.ToString();
-                db.Subjects.Add(subject);
+                db.Categories.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -55,24 +55,24 @@ namespace Proiect_DAW.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
-            Subject subject = db.Subjects.Find(id);
-            ViewBag.Subject = subject;
+            Category category = db.Categories.Find(id);
+            ViewBag.Category = category;
             return View();
         }
 
         [HttpPut]
-        public ActionResult Edit(int id, Subject requestSubject)
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Edit(int id, Category requestCategory)
         {
             try
             {
-                Subject subject = db.Subjects.Find(id);
-                if (TryUpdateModel(subject))
+                Category category = db.Categories.Find(id);
+                if (TryUpdateModel(category))
                 {
-                    subject.Title = requestSubject.Title;
-                    subject.Content = requestSubject.Content;
-                    subject.Data = System.DateTime.Now.ToString();
+                    category.Name = requestCategory.Name;
                     db.SaveChanges();
                 }
                 return RedirectToAction("Index");
@@ -84,10 +84,11 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int id)
         {
-            Subject subject = db.Subjects.Find(id);
-            db.Subjects.Remove(subject);
+            Category category = db.Categories.Find(id);
+            db.Categories.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
