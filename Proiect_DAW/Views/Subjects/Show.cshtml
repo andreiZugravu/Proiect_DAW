@@ -1,4 +1,8 @@
-﻿
+﻿@using Microsoft.AspNet.Identity;
+@using PagedList.Mvc;
+@using PagedList;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Show";
 }
@@ -7,11 +11,56 @@
 <p>@ViewBag.Subject.Content</p>
 <p>@ViewBag.Subject.Data</p>
 <br />
-<a href="/Subjects/Edit/@ViewBag.Subject.SubjectId">Modifica subiectul</a>
-<form method="post" action="/Subjects/Delete/@ViewBag.Subject.SubjectId">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Sterge subiectul</button>
-</form>
+
+@foreach (var reply in ViewBag.Subject.Replies)
+{
+    <p>@reply.Content</p>
+    <p>@reply.Data</p>
+    <p>
+        <i class="glyphicon glyphicon-user"></i> <i>reply written by</i> <strong>
+            @reply.User.UserName
+        </strong>
+    </p>
+    <br/>
+}
+<table class="display-table">
+    <tbody>
+        @foreach (var reply in ViewBag.Replies)
+            {
+                <tr>
+                    <td class="td-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
+                    </td>
+                    <td class="td-details">
+                        <p>@reply.Content</p>
+                        <p>@reply.Data</p>
+                        <p>
+                            <i class="glyphicon glyphicon-user"></i> <i>reply written by</i> <strong>
+                                @reply.User.UserName
+                            </strong>
+                        </p>
+                    </td>
+                    <td class="td-statistics">
+                        <p>X vizualizari si raspunsuri - TODO</p>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+<div class="col-sm-12">
+    @Html.PagedListPager((IPagedList)ViewBag.Replies, page => Url.Action("Show", "Subjects", new { id = ViewBag.Subject.SubjectId, page }))
+    Showing @ViewBag.Replies.FirstItemOnPage to @ViewBag.Replies.LastItemOnPage of @ViewBag.Replies.TotalItemCount replies
+</div>
+
+<br />
+@if (ViewBag.Subject.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+{
+    <a href="/Subjects/Edit/@ViewBag.Subject.SubjectId">Edit subject</a>
+    <form method="post" action="/Subjects/Delete/@ViewBag.Subject.SubjectId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button type="submit">Delete subject</button>
+    </form>
+}
 <hr />
 <a href="/Subjects/Index">Inapoi la lista subiectelor</a>
 <br />

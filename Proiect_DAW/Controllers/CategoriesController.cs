@@ -11,7 +11,7 @@ namespace Proiect_DAW.Controllers
 {
     public class CategoriesController : Controller
     {
-        private SubjectDBContext db = new SubjectDBContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {

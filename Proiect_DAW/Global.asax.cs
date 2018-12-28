@@ -19,7 +19,7 @@ namespace Proiect_DAW
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            Database.SetInitializer<SubjectDBContext>(new DropCreateDatabaseIfModelChanges<SubjectDBContext>());
+            Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
         }
     }
 }

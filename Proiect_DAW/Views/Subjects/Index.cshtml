@@ -4,13 +4,20 @@
 }
 
 <h2>Index</h2>
-
+@if (TempData["message"]  != null )
+{
+    <p> @TempData["message"] </p>
+}
 @foreach (var subject in ViewBag.Subjects)
 {
     <p>@subject.Title</p>
     <p>@subject.Content</p>
     <p>@subject.Data</p>
     <p>@subject.Category.Name</p>
+    <p><i class="glyphicon glyphicon-user"></i> <i>subject written by</i> <strong>
+        @subject.User.UserName
+    </strong></p>
+    <p>@subject.NumberOfViews</p>
     <a href="/Subjects/Show/@subject.SubjectId">Afisare subiect de discutie</a>
     <br />
     <hr />

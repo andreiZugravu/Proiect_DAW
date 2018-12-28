@@ -25,6 +25,10 @@ namespace Proiect_DAW.Models
         {
         }
 
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Reply> Replies { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
