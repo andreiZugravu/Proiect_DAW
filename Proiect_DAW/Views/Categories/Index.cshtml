@@ -1,7 +1,4 @@
-﻿@model PagedList.IPagedList<Proiect_DAW.Models.Category>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+﻿<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -13,7 +10,7 @@
 {
     <h3>
         <!--<a class="toggle right" href="#" title="Toggle Soft Related / OS">Toggle Soft Related / OS</a> <span class="glyph">▶</span> --> 
-        <a href="/Categories/Show/@category.CategoryId" title="View subjects in this category">@category.Name</a>
+        <a href="/Categories/Show?id=@category.CategoryId" title="View subjects in this category">@category.Name</a>
     </h3>
     int nrSubjects = 0;
     int limit = 5;

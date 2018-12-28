@@ -1,10 +1,53 @@
-﻿
+﻿@using PagedList.Mvc;
+@using PagedList;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
 @{
     ViewBag.Title = "Show";
 }
 
-<h1>@ViewBag.Category.Name</h1>
-<br />
+@{
+    var category = ViewBag.Category;
+}
+<h3>
+    @category.Name
+</h3>
+
+<table class="display-table">
+    <tbody>
+        @foreach (var subject in ViewBag.Subjects)
+            {
+                int contentLimit = 50;
+                string subjectContentDisplay = subject.Content;
+                if (subjectContentDisplay.Length > contentLimit)
+                {
+                    subjectContentDisplay = subject.Content.Substring(0, contentLimit);
+                    subjectContentDisplay = subjectContentDisplay + "...";
+                }
+                <tr>
+                    <td class="td-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
+                    </td>
+                    <td class="td-details">
+                        <h1>@subject.Title</h1>
+                        <p>@subjectContentDisplay</p>
+                        <p>Owner: <b>TODO</b></p>
+                    </td>
+                    <td class="td-statistics">
+                        <p>X vizualizari si raspunsuri - TODO</p>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+<div class="col-sm-10">
+    @Html.PagedListPager((IPagedList)ViewBag.Subjects, page => Url.Action("Show", "Categories", new { id = category.CategoryId, page }))
+    Showing @ViewBag.Subjects.FirstItemOnPage to @ViewBag.Subjects.LastItemOnPage of @ViewBag.Subjects.TotalItemCount subjects
+</div>
+
+
+
 <a href="/Categories/Edit/@ViewBag.Category.CategoryId">Modifica categoria</a>
 <form method="post" action="/Categories/Delete/@ViewBag.Category.CategoryId">
     @Html.HttpMethodOverride(HttpVerbs.Delete)

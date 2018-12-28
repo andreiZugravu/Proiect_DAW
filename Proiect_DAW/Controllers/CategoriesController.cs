@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Proiect_DAW.Models;
 using PagedList;
+using PagedList.Mvc;
 
 namespace Proiect_DAW.Controllers
 {
@@ -27,10 +28,16 @@ namespace Proiect_DAW.Controllers
             return View();
         }
 
-        public ActionResult Show(int id)
+        public ActionResult Show(int id, int? page)
         {
             Category category = db.Categories.Find(id);
             ViewBag.Category = category;
+
+            int pageSize = 5;
+            int pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            PagedList<Subject> subjects = new PagedList<Subject>(category.Subjects, pageIndex, pageSize);
+            ViewBag.Subjects = subjects;
+
             return View();
         }
 
