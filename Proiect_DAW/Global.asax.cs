@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Data.Entity;
+using Proiect_DAW.Models;
 
 namespace Proiect_DAW
 {
@@ -16,6 +18,8 @@ namespace Proiect_DAW
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Database.SetInitializer<SubjectDBContext>(new DropCreateDatabaseIfModelChanges<SubjectDBContext>());
         }
     }
 }

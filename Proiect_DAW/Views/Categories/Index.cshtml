@@ -8,12 +8,7 @@
 @foreach (var category in ViewBag.Categories)
 {
     <a href="/Categories/Show/@category.CategoryId">@category.Name</a>
-    foreach (var subject in category.Subjects)
-    {
-        <p>@subject.Title</p>
-        <p>@subject.Content</p>
-        <br/>
-    }
+    
     <br />
     <hr />
     <br />
