@@ -40,3 +40,13 @@ textarea {
 .display-table .td-statistics {
     width: 20%;
 }
+
+
+.search-bar-container {
+    padding-bottom: 21px;
+}
+
+.search-bar {
+    position: relative;
+    top: 10px;
+}
