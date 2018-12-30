@@ -19,7 +19,14 @@
     <select name="CategoryId">
         @foreach (var category in ViewBag.CategoriesIds)
         {
-            <option value="@category.CategoryId">@category.Name</option>
+            if (category.CategoryId == ViewBag.CategoryId)
+            {
+                <option value="@category.CategoryId" selected>@category.Name</option>
+            }
+            else
+            {
+                <option value="@category.CategoryId">@category.Name</option>
+            }
         }
     </select>
     <br />

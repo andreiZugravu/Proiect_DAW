@@ -10,6 +10,7 @@
 <h1>@ViewBag.Subject.Title</h1>
 <p>@ViewBag.Subject.Content</p>
 <p>@ViewBag.Subject.Data</p>
+<p>Number of views : @ViewBag.Subject.NumberOfViews</p>
 <p>
     <i class="glyphicon glyphicon-user"></i> <i>Subject written by</i> <strong>
         @ViewBag.Subject.User.UserName
@@ -33,9 +34,17 @@
                                 @reply.User.UserName
                             </strong>
                         </p>
+                        @if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+                        {
+                            <a href="/Subjects/Reply_Edit/@reply.ReplyId">Edit reply</a>
+                            <form method="post" action="/Subjects/Reply_Delete/@reply.ReplyId">
+                                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                <button type="submit">Delete reply</button>
+                            </form>
+                        }
                     </td>
                     <td class="td-statistics">
-                        <p>X vizualizari si raspunsuri - TODO</p>
+                        <p>TODO : ceva si aici</p>
                     </td>
                 </tr>
         }
@@ -50,10 +59,8 @@
     <br />
     <form action="/Subjects/Reply_New" method="post">
         <input type="hidden" name="SubjectId" value="@ViewBag.Subject.SubjectId" />
-        <div>
-            <textarea name="Content" id="Reply_Content" style="font-family:sans-serif;font-size:1.2em;">
-                Hey... say something!
-            </textarea>
+        <div class="col-sm-12" style="padding-left:0px">
+            <textarea name="Content" rows="8" cols="80" id="Reply_Content" style="font-family:sans-serif;font-size:1.2em;">Hey... say something!</textarea>
         </div>
         <button type="submit">Reply</button>
     </form>

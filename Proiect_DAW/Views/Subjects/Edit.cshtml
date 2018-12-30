@@ -14,7 +14,23 @@
     <label for="Content">Content</label>
     <br />
     <input type="text" name="Content" value="@ViewBag.Subject.Content" />
+    <br /><br />
+    <label for="CategoryId">Category</label>
     <br />
+    <select name="CategoryId">
+        @foreach (var category in ViewBag.CategoriesIds)
+        {
+            if (category.CategoryId == ViewBag.Subject.CategoryId)
+            {
+                <option value="@category.CategoryId" selected>@category.Name</option>
+            }
+            else
+            {
+                <option value="@category.CategoryId">@category.Name</option>
+            }
+        }
+    </select>
+    <br/>
 
-    <button type="submit">Modifica subiectul</button>
+    <button type="submit">Submit</button>
 </form>

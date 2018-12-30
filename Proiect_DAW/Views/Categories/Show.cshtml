@@ -13,6 +13,52 @@
 <h3>
     @category.Name
 </h3>
+<form method="get" action="/Categories/Show">
+    <input type="hidden" name="id" value="@category.CategoryId" />
+    <div class="form-group">
+        <label for="Field">Sort by</label>
+        <select name="Field">
+            @if (ViewBag.Field == "Title")
+            {
+                <option value="Title" selected>Title</option>
+            }
+            else
+            {
+                <option value="Title">Title</option>
+            }
+            @if (ViewBag.Field == "Data")
+            {
+                <option value="Data" selected>Data</option>
+            }
+            else
+            {
+                <option value="Data">Data</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="Order">Order</label>
+        <select name="Order">
+            @if (ViewBag.Order == "Ascending")
+            {
+                <option value="Ascending" selected>Ascending</option>
+            }
+            else
+            {
+                <option value="Ascending">Ascending</option>
+            }
+            @if (ViewBag.Order == "Descending")
+            {
+                <option value="Descending" selected>Descending</option>
+            }
+            else
+            {
+                <option value="Descending">Descending</option>
+            }
+        </select>
+    </div>
+    <button type="submit">Sort</button>
+</form>
 
 <table class="display-table">
     <tbody>
@@ -32,10 +78,11 @@
                     <td class="td-details">
                         <h1><a href="/Subjects/Show/@subject.SubjectId">@subject.Title</a></h1>
                         <p>@subjectContentDisplay</p>
+                        <p>@subject.Data</p>
                         <p>Owner: <b>@subject.User.UserName</b></p>
                     </td>
                     <td class="td-statistics">
-                        <p>X vizualizari si raspunsuri - TODO</p>
+                        <p>Number of views : @subject.NumberOfViews</p>
                     </td>
                 </tr>
         }
@@ -47,7 +94,7 @@
 </div>
 @if (this.User.IsInRole("User") || this.User.IsInRole("Editor") || this.User.IsInRole("Administrator"))
 {
-    <a href="/Subjects/New">Create a new subject</a>
+    @Html.ActionLink("Create a new subject", "New", "Subjects", new { CategoryId = category.CategoryId }, null)
 }
 else
 {

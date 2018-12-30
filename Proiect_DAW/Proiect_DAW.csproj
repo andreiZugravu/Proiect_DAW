@@ -296,6 +296,7 @@
     <Content Include="Views\Categories\Show.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Subjects\Reply_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

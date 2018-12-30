@@ -34,6 +34,11 @@ namespace Proiect_DAW.Controllers
         public ActionResult Show(int id, int? page)
         {
             Subject subject = db.Subjects.Find(id);
+            if (TryUpdateModel(subject))
+            {
+                subject.NumberOfViews = subject.NumberOfViews + 1;
+                db.SaveChanges();
+            }
             ViewBag.Subject = subject;
 
             int pageSize = 5;
@@ -45,9 +50,10 @@ namespace Proiect_DAW.Controllers
         }
 
         [Authorize(Roles = "User,Editor,Administrator")]
-        public ActionResult New()
+        public ActionResult New(int? CategoryId)
         {
             ViewBag.CategoriesIds = db.Categories;
+            ViewBag.CategoryId = CategoryId;
             return View();
         }
 
@@ -62,7 +68,7 @@ namespace Proiect_DAW.Controllers
                 subject.NumberOfViews = 0;
                 db.Subjects.Add(subject);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Show", new { id = subject.SubjectId });
             }
             catch (Exception e)
             {
@@ -96,6 +102,7 @@ namespace Proiect_DAW.Controllers
         {
             Subject subject = db.Subjects.Find(id);
             ViewBag.Subject = subject;
+            ViewBag.CategoriesIds = db.Categories;
 
             if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
             {
@@ -124,12 +131,58 @@ namespace Proiect_DAW.Controllers
                         subject.Data = System.DateTime.Now.ToString();
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
                 }
                 else
                 {
                     TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
+                }
+            }
+            catch (Exception e)
+            {
+                return View();
+            }
+        }
+
+        [Authorize(Roles = "User,Editor,Administrator")]
+        public ActionResult Reply_Edit(int id)
+        {
+            Reply reply = db.Replies.Find(id);
+            ViewBag.Reply = reply;
+
+            if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            {
+                return View();
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
+                return RedirectToAction("Show", new { id = reply.Subject.SubjectId });
+            }
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "User,Editor,Administrator")]
+        public ActionResult Reply_Edit(int id, Reply requestReply)
+        {
+            try
+            {
+                Reply reply = db.Replies.Find(id);
+                if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+                {
+                    if (TryUpdateModel(reply))
+                    {
+                        reply.Content = requestReply.Content;
+                        reply.Data = System.DateTime.Now.ToString();
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Show", new { id = reply.SubjectId });
+                }
+                else
+                {
+                    TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
+                    return RedirectToAction("Show", new { id = reply.SubjectId });
                 }
             }
             catch (Exception e)
@@ -147,12 +200,30 @@ namespace Proiect_DAW.Controllers
             {
                 db.Subjects.Remove(subject);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
             }
             else
             {
                 TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
+            }
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "User,Editor,Administrator")]
+        public ActionResult Reply_Delete(int id)
+        {
+            Reply reply = db.Replies.Find(id);
+            if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+            {
+                db.Replies.Remove(reply);
+                db.SaveChanges();
+                return RedirectToAction("Show", new { id = reply.SubjectId });
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
+                return RedirectToAction("Show", new { id = reply.SubjectId });
             }
         }
     }

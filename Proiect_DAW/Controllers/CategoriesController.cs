@@ -28,15 +28,43 @@ namespace Proiect_DAW.Controllers
             return View();
         }
 
-        public ActionResult Show(int id, int? page)
+        public ActionResult Show(int id, int? page, string Field, string Order)
         {
             Category category = db.Categories.Find(id);
             ViewBag.Category = category;
 
             int pageSize = 5;
             int pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            PagedList<Subject> subjects = new PagedList<Subject>(category.Subjects, pageIndex, pageSize);
-            ViewBag.Subjects = subjects;
+            if (Field != null && Order != null)
+            {
+                if (Field == "Title" && Order == "Ascending")
+                {
+                    PagedList<Subject> subjects = new PagedList<Subject>(category.Subjects.OrderBy(m => m.Title), pageIndex, pageSize);
+                    ViewBag.Subjects = subjects;
+                }
+                else if (Field == "Title" && Order == "Descending")
+                {
+                    PagedList<Subject> subjects = new PagedList<Subject>(category.Subjects.OrderByDescending(m => m.Title), pageIndex, pageSize);
+                    ViewBag.Subjects = subjects;
+                }
+                else if (Field == "Data" && Order == "Ascending")
+                {
+                    PagedList<Subject> subjects = new PagedList<Subject>(category.Subjects.OrderBy(m => m.Data), pageIndex, pageSize);
+                    ViewBag.Subjects = subjects;
+                }
+                else if (Field == "Data" && Order == "Descending")
+                {
+                    PagedList<Subject> subjects = new PagedList<Subject>(category.Subjects.OrderByDescending(m => m.Data), pageIndex, pageSize);
+                    ViewBag.Subjects = subjects;
+                }
+                ViewBag.Field = Field;
+                ViewBag.Order = Order;
+            }
+            else
+            {
+                PagedList<Subject> subjects = new PagedList<Subject>(category.Subjects, pageIndex, pageSize);
+                ViewBag.Subjects = subjects;
+            }
 
             return View();
         }

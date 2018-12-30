@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Reply_Edit";
+}
+
+<h2>Reply_Edit</h2>
+
+<form method="post" action="/Subjects/Reply_Edit/@ViewBag.Reply.ReplyId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label for="Content">Content</label>
+    <br />
+    <input type="text" name="Content" value="@ViewBag.Reply.Content" />
+    <br />
+
+    <button type="submit">Submit</button>
+</form>
