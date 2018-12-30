@@ -10,6 +10,11 @@
 <h1>@ViewBag.Subject.Title</h1>
 <p>@ViewBag.Subject.Content</p>
 <p>@ViewBag.Subject.Data</p>
+<p>
+    <i class="glyphicon glyphicon-user"></i> <i>Subject written by</i> <strong>
+        @ViewBag.Subject.User.UserName
+    </strong>
+</p>
 <br />
 
 <table class="display-table">
@@ -40,7 +45,6 @@
     @Html.PagedListPager((IPagedList)ViewBag.Replies, page => Url.Action("Show", "Subjects", new { id = ViewBag.Subject.SubjectId, page }))
     Showing @ViewBag.Replies.FirstItemOnPage to @ViewBag.Replies.LastItemOnPage of @ViewBag.Replies.TotalItemCount replies
 </div>
-<p>@this.User.IsInRole("User")</p>
 @if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator")) //trebuie sa fie logat ca sa poata da reply
 { //this.User.IsInRole
     <br />
@@ -69,5 +73,5 @@ else
     </form>
 }
 <hr />
-<a href="/Subjects/Index">Inapoi la lista subiectelor</a>
+<a href="/Categories/Show/@ViewBag.Subject.CategoryId">Back to subjects in this category</a>
 <br />

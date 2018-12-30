@@ -35,7 +35,7 @@
                     <td class="td-details">
                         <h1>@subject.Title</h1>
                         <p>@subjectContentDisplay</p>
-                        <p>Owner: <b>TODO</b></p>
+                        <p>Owner: <b>@subject.User.UserName</b></p>
                     </td>
                     <td class="td-statistics">
                         <p>X vizualizari si raspunsuri - TODO</p>
@@ -46,5 +46,7 @@
     </table>
     <br />
 }
-<a href="/Categories/New">Adauga alta categorie</a>
-<br />
+@if (User.IsInRole("Administrator"))
+{
+    <a href="/Categories/New">Add a new category</a>
+}

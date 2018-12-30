@@ -20,7 +20,7 @@
                     <td class="td-details">
                         <h1><a href="/Subjects/Show/@subject.SubjectId">@subject.Title</a></h1>
                         <p>@subject.Content</p>
-                        <p>Owner: <b>TODO</b></p>
+                        <p>Owner: <b>@subject.User.UserName</b></p>
                     </td>
                     <td class="td-statistics">
                         <p>X vizualizari si raspunsuri - TODO</p>
@@ -44,8 +44,9 @@
                     <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
                 </td>
                 <td class="td-details">
+                    <p>Parent subject : <a href="/Subjects/Show/@reply.Subject.SubjectId">@reply.Subject.Title</a></p>
                     <p>@reply.Content</p>
-                    <p>Owner: <b>TODO</b></p>
+                    <p>Owner: <b>@reply.User.Username</b></p>
                 </td>
                 <td class="td-statistics">
                     <p>X vizualizari si raspunsuri - TODO</p>

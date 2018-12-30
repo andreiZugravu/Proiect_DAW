@@ -1,7 +1,28 @@
-﻿
+﻿@using Proiect_DAW.Models;
+@model ApplicationUser
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Manage editors";
+    int contor = 0;
 }
 
-<h2>Index</h2>
+<h3>Manage editors</h3>
+<h1>Current editors</h1>
+@foreach (ApplicationUser editorUser in ViewBag.editorUsers)
+{
+    contor = contor + 1;
+    var userName = editorUser.UserName;
+    var displayStr = contor + ".";
+    <p>@displayStr @Html.DisplayFor(m => userName)</p>
+}
 
+<h1>Add editors</h1>
+<form method="post" action="/Admin/New_editor">
+    @Html.DropDownListFor(m => m.UserName, new SelectList(ViewBag.notEditorUsers, "Id", "UserName"))
+    <button type="submit">Add</button>
+</form>
+
+<h1>Remove editors</h1>
+<form method="post" action="/Admin/Delete_editor">
+    @Html.DropDownListFor(m => m.UserName, new SelectList(ViewBag.editorUsers, "Id", "UserName"))
+    <button type="submit">Remove</button>
+</form>

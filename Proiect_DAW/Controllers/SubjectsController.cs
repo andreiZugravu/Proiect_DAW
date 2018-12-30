@@ -104,7 +104,7 @@ namespace Proiect_DAW.Controllers
             else
             {
                 TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
-                return RedirectToAction("Index"); //TODO
+                return RedirectToAction("Show", new { id });
             }
         }
 

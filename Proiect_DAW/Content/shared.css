@@ -1,0 +1,52 @@
+.row {
+    margin-bottom: 10px;
+}
+
+.collapsed-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.collapsed-list li {
+    margin: 0 10px;
+    display: inline-block;
+}
+
+.main-container {
+    background-color: #eee;
+}
+
+#login-bar {
+    background-color: cyan;
+}
+
+.valign-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.list-no-style {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.section-table {
+    width: 100%;
+}
+
+.section-table caption {
+    caption-side: top;
+    padding: 0 15px;
+    background-color: cyan;
+}
+
+.section-table td {
+    padding: 0 5px;
+}
+
+.row {
+    border: 1px solid black;
+}

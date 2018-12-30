@@ -32,7 +32,7 @@
                     <td class="td-details">
                         <h1><a href="/Subjects/Show/@subject.SubjectId">@subject.Title</a></h1>
                         <p>@subjectContentDisplay</p>
-                        <p>Owner: <b>TODO</b></p>
+                        <p>Owner: <b>@subject.User.UserName</b></p>
                     </td>
                     <td class="td-statistics">
                         <p>X vizualizari si raspunsuri - TODO</p>
@@ -45,7 +45,14 @@
     @Html.PagedListPager((IPagedList)ViewBag.Subjects, page => Url.Action("Show", "Categories", new { id = category.CategoryId, page }))
     Showing @ViewBag.Subjects.FirstItemOnPage to @ViewBag.Subjects.LastItemOnPage of @ViewBag.Subjects.TotalItemCount subjects
 </div>
-
+@if (this.User.IsInRole("User") || this.User.IsInRole("Editor") || this.User.IsInRole("Administrator"))
+{
+    <a href="/Subjects/New">Create a new subject</a>
+}
+else
+{
+    <p>You must be logged in to create a new subject.</p>
+}
 <br/>
 @if (this.User.IsInRole("Administrator"))
 {
