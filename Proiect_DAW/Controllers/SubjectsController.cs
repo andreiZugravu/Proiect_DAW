@@ -7,6 +7,8 @@ using Proiect_DAW.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
 using PagedList.Mvc;
+using System.Web.Security;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Proiect_DAW.Controllers
 {
@@ -42,6 +44,7 @@ namespace Proiect_DAW.Controllers
             return View();
         }
 
+        [Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult New()
         {
             ViewBag.CategoriesIds = db.Categories;
@@ -49,6 +52,7 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult New(Subject subject)
         {
             try
@@ -66,6 +70,28 @@ namespace Proiect_DAW.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles = "User,Editor,Administrator")]
+        public ActionResult Reply_New(Reply model)
+        {
+            try
+            {
+                Reply reply = new Reply();
+                reply.Content = model.Content;
+                reply.Data = System.DateTime.Now.ToString();
+                reply.SubjectId = model.SubjectId;
+                reply.UserId = User.Identity.GetUserId();
+                db.Replies.Add(reply);
+                db.SaveChanges();
+                return RedirectToAction("Show", new { id = model.SubjectId });
+            }
+            catch (Exception e)
+            {
+                return View();
+            }
+        }
+
+        [Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Edit(int id)
         {
             Subject subject = db.Subjects.Find(id);
@@ -83,6 +109,7 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Edit(int id, Subject requestSubject)
         {
             try
@@ -112,6 +139,7 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Delete(int id)
         {
             Subject subject = db.Subjects.Find(id);

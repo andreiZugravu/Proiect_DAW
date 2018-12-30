@@ -1,0 +1,60 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Search results";
+}
+
+<h2>Search results for @ViewBag.SearchStr</h2>
+<h1>Subjects</h1>
+<table class="display-table">
+    <tbody>
+        @foreach (var subject in ViewBag.Subjects)
+            {
+                <tr>
+                    <td class="td-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
+                    </td>
+                    <td class="td-details">
+                        <h1><a href="/Subjects/Show/@subject.SubjectId">@subject.Title</a></h1>
+                        <p>@subject.Content</p>
+                        <p>Owner: <b>TODO</b></p>
+                    </td>
+                    <td class="td-statistics">
+                        <p>X vizualizari si raspunsuri - TODO</p>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+<div class="col-sm-12">
+    @Html.PagedListPager((IPagedList)ViewBag.Subjects, pageSubject => Url.Action("Index", "Search", new { SearchStr = ViewBag.SearchStr, pageSubject }))
+    Showing @ViewBag.Subjects.FirstItemOnPage to @ViewBag.Subjects.LastItemOnPage of @ViewBag.Subjects.TotalItemCount subjects
+</div>
+
+<h1>Replies</h1>
+<table class="display-table">
+    <tbody>
+        @foreach (var reply in ViewBag.Replies)
+            {
+            <tr>
+                <td class="td-icon">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
+                </td>
+                <td class="td-details">
+                    <p>@reply.Content</p>
+                    <p>Owner: <b>TODO</b></p>
+                </td>
+                <td class="td-statistics">
+                    <p>X vizualizari si raspunsuri - TODO</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="col-sm-12">
+    @Html.PagedListPager((IPagedList)ViewBag.Replies, pageReply => Url.Action("Index", "Search", new { SearchStr = ViewBag.SearchStr, pageReply }))
+    Showing @ViewBag.Replies.FirstItemOnPage to @ViewBag.Replies.LastItemOnPage of @ViewBag.Replies.TotalItemCount subjects
+</div>
