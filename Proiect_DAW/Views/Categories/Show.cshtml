@@ -3,111 +3,71 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
 
+<style>
+    .subject-icon {
+        width: 3%;
+    }
+
+    .subject-content {
+        width: 70%;
+    }
+
+    .subject-stats {
+        width: 12%;
+    }
+
+    .subject-recent {
+        width: 15%;
+    }
+
+    .subject-title {
+        margin-bottom: 0;
+    }
+</style>
+
 @{
     ViewBag.Title = "Show";
-}
-
-@{
     var category = ViewBag.Category;
 }
-<h3>
-    @category.Name
-</h3>
-<form method="get" action="/Categories/Show">
-    <input type="hidden" name="id" value="@category.CategoryId" />
-    <div class="form-group">
-        <label for="Field">Sort by</label>
-        <select name="Field">
-            @if (ViewBag.Field == "Title")
-            {
-                <option value="Title" selected>Title</option>
-            }
-            else
-            {
-                <option value="Title">Title</option>
-            }
-            @if (ViewBag.Field == "Data")
-            {
-                <option value="Data" selected>Data</option>
-            }
-            else
-            {
-                <option value="Data">Data</option>
-            }
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="Order">Order</label>
-        <select name="Order">
-            @if (ViewBag.Order == "Ascending")
-            {
-                <option value="Ascending" selected>Ascending</option>
-            }
-            else
-            {
-                <option value="Ascending">Ascending</option>
-            }
-            @if (ViewBag.Order == "Descending")
-            {
-                <option value="Descending" selected>Descending</option>
-            }
-            else
-            {
-                <option value="Descending">Descending</option>
-            }
-        </select>
-    </div>
-    <button type="submit">Sort</button>
-</form>
 
-<table class="display-table">
-    <tbody>
-        @foreach (var subject in ViewBag.Subjects)
-            {
-                int contentLimit = 50;
-                string subjectContentDisplay = subject.Content;
-                if (subjectContentDisplay.Length > contentLimit)
-                {
-                    subjectContentDisplay = subject.Content.Substring(0, contentLimit);
-                    subjectContentDisplay = subjectContentDisplay + "...";
-                }
-                <tr>
-                    <td class="td-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
-                    </td>
-                    <td class="td-details">
-                        <h1><a href="/Subjects/Show/@subject.SubjectId">@subject.Title</a></h1>
-                        <p>@subjectContentDisplay</p>
-                        <p>@subject.Data</p>
-                        <p>Owner: <b>@subject.User.UserName</b></p>
-                    </td>
-                    <td class="td-statistics">
-                        <p>Number of views : @subject.NumberOfViews</p>
-                    </td>
-                </tr>
-        }
-    </tbody>
-</table>
-<div class="col-sm-12">
-    @Html.PagedListPager((IPagedList)ViewBag.Subjects, page => Url.Action("Show", "Categories", new { id = category.CategoryId, page }))
-    Showing @ViewBag.Subjects.FirstItemOnPage to @ViewBag.Subjects.LastItemOnPage of @ViewBag.Subjects.TotalItemCount subjects
+<div class="container main-container">
+    <div class="sections">
+        <div class="row">
+            <table class="section-table" border="1">
+                <caption>
+                    <ul class="collapsed-list">
+                        <li style="float: left;">@category.Name</li>
+                        <li style="float: right;"><a href="/Subjects/New/@category.CategoryId">Add a new subject</a></li>
+                    </ul>
+                </caption>
+                <tbody>
+                    @foreach (var subject in category.Subjects)
+                    {
+                        <tr class="subject">
+                            <td class="subject-icon text-center"><img src="https://forum.softpedia.com//public/style_images/classic/f_icon_read.png"></td>
+                            <td class="subject-content">
+                                <p class="subject-title"><a href="/Subjects/Show/@subject.SubjectId">@subject.Title</a></p>
+                            </td>
+                            <td class="subject-stats">
+                                <ul class="list-no-style">
+                                    <li>@subject.Replies.Count replies</li>
+                                    <li>@subject.NumberOfViews views</li>
+                                </ul>
+                            </td>
+                            <td class="subject-recent">
+                                <ul class="list-no-style">
+                                    <li><a href="#">@subject.User.UserName</a></li>
+                                    <li>@subject.Data</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col-sm-12">
+                @Html.PagedListPager((IPagedList)ViewBag.Subjects, page => Url.Action("Show", "Categories", new { id = category.CategoryId, page }))
+                Showing @ViewBag.Subjects.FirstItemOnPage to @ViewBag.Subjects.LastItemOnPage of @ViewBag.Subjects.TotalItemCount subjects
+            </div>
+        </div>
+    </div>
 </div>
-@if (this.User.IsInRole("User") || this.User.IsInRole("Editor") || this.User.IsInRole("Administrator"))
-{
-    @Html.ActionLink("Create a new subject", "New", "Subjects", new { CategoryId = category.CategoryId }, null)
-}
-else
-{
-    <p>You must be logged in to create a new subject.</p>
-}
-<br/>
-@if (this.User.IsInRole("Administrator"))
-{
-    <a href="/Categories/Edit/@ViewBag.Category.CategoryId">Edit category</a>
-    <form method="post" action="/Categories/Delete/@ViewBag.Category.CategoryId">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit">Delete category</button>
-    </form>
-    <hr />
-    <a href="/Categories/Index">Back to list of categories</a>
-}

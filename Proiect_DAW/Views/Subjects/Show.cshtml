@@ -21,12 +21,15 @@
 
 @{
     ViewBag.Title = "Show";
+    var category = ViewBag.Subject.Category;
+    var subject = ViewBag.Subject;
+    var replies = ViewBag.Replies;
 }
 
 <div class="row">
     <div class="col-md-12">
         <h1>@ViewBag.Subject.Title</h1>
-        <p>@ViewBag.Subject.Category.Name</p>
+        <p><a href="/Categories/Show/@category.CategoryId">@category.Name</a></p>
     </div>
 </div>
 
@@ -34,12 +37,12 @@
     <table class="section-table" border="1">
         <caption>
             <ul class="collapsed-list">
-                <li style="float: left">@ViewBag.Replies.Count replies to this topic</li>
+                <li style="float: left">@replies.Count replies to this topic</li>
                 @if (ViewBag.Subject.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
                 {
-                    <li style="float: right;"><a href="/Subjects/Edit/@ViewBag.Subject.SubjectId">Edit</a></li>
+                    <li style="float: right;"><a href="/Subjects/Edit/@subject.SubjectId">Edit</a></li>
                     <li style="float: right;">
-                        <form id="delete-form" method="post" action="/Subjects/Delete/@ViewBag.Subject.SubjectId">
+                        <form id="delete-form" method="post" action="/Subjects/Delete/@subject.SubjectId">
                             @Html.HttpMethodOverride(HttpVerbs.Delete)
                             <a href="#" onclick="document.getElementById('delete-form').submit()">Delete</a>
                         </form>
@@ -50,7 +53,7 @@
         <tbody>
             <tr>
                 <td class="reply-user">
-                    <a href="#">@ViewBag.Subject.User.UserName</a>
+                    <a href="#">@subject.User.UserName</a>
                     @*<p>Posts: @ViewBag.Subject.User.Subjects.Count()</p>*@
                     @*<p>Registered: 27/05/1990</p>*@
                 </td>
@@ -91,7 +94,7 @@
     { //this.User.IsInRole
         <br />
         <form action="/Subjects/Reply_New" method="post">
-            <input type="hidden" name="SubjectId" value="@ViewBag.Subject.SubjectId" />
+            <input type="hidden" name="SubjectId" value="@subject.SubjectId" />
             <div class="col-sm-12" style="padding-left:0px">
                 <textarea name="Content" rows="8" cols="80" id="Reply_Content" style="font-family:sans-serif;font-size:1.2em;">Hey... say something!</textarea>
             </div>
@@ -103,79 +106,3 @@
         <p>You must be logged in to reply.</p>
     }
 </div>
-
-@*<h1>@ViewBag.Subject.Title</h1>
-    <p>@ViewBag.Subject.Content</p>
-    <p>@ViewBag.Subject.Data</p>
-    <p>Number of views : @ViewBag.Subject.NumberOfViews</p>
-    <p>
-        <i class="glyphicon glyphicon-user"></i> <i>Subject written by</i> <strong>
-            @ViewBag.Subject.User.UserName
-        </strong>
-    </p>
-    <br />
-
-    <table class="display-table">
-        <tbody>
-            @foreach (var reply in ViewBag.Replies)
-                {
-                    <tr>
-                        <td class="td-icon">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
-                        </td>
-                        <td class="td-details">
-                            <p>@reply.Content</p>
-                            <p>@reply.Data</p>
-                            <p>
-                                <i class="glyphicon glyphicon-user"></i> <i>reply written by</i> <strong>
-                                    @reply.User.UserName
-                                </strong>
-                            </p>
-                            @if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
-                            {
-                                <a href="/Subjects/Reply_Edit/@reply.ReplyId">Edit reply</a>
-                                <form method="post" action="/Subjects/Reply_Delete/@reply.ReplyId">
-                                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-                                    <button type="submit">Delete reply</button>
-                                </form>
-                            }
-                        </td>
-                        <td class="td-statistics">
-                            <p>TODO : ceva si aici</p>
-                        </td>
-                    </tr>
-            }
-        </tbody>
-    </table>
-    <div class="col-sm-12">
-        @Html.PagedListPager((IPagedList)ViewBag.Replies, page => Url.Action("Show", "Subjects", new { id = ViewBag.Subject.SubjectId, page }))
-        Showing @ViewBag.Replies.FirstItemOnPage to @ViewBag.Replies.LastItemOnPage of @ViewBag.Replies.TotalItemCount replies
-    </div>
-    @if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator")) //trebuie sa fie logat ca sa poata da reply
-    { //this.User.IsInRole
-        <br />
-        <form action="/Subjects/Reply_New" method="post">
-            <input type="hidden" name="SubjectId" value="@ViewBag.Subject.SubjectId" />
-            <div class="col-sm-12" style="padding-left:0px">
-                <textarea name="Content" rows="8" cols="80" id="Reply_Content" style="font-family:sans-serif;font-size:1.2em;">Hey... say something!</textarea>
-            </div>
-            <button type="submit">Reply</button>
-        </form>
-    }
-    else
-    {
-        <p>You must be logged in to reply.</p>
-    }
-
-    @if (ViewBag.Subject.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
-    {
-        <br/>
-        <a href="/Subjects/Edit/@ViewBag.Subject.SubjectId">Edit subject</a>
-        <form method="post" action="/Subjects/Delete/@ViewBag.Subject.SubjectId">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button type="submit">Delete subject</button>
-        </form>
-    }
-    <hr />
-    <a href="/Categories/Show/@ViewBag.Subject.CategoryId">Back to subjects in this category</a>
-    <br />*@

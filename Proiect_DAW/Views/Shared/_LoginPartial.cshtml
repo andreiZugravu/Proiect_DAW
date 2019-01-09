@@ -9,7 +9,7 @@
     <ul class="nav navbar-nav navbar-right">
         <li class="search-bar-container">
             <form method="post" action="/Search/Index" id="SearchForm">
-                <input type="text" value="Search" id="SearchStr" name="SearchStr" class="search-bar" />
+                <input type="text" placeholder="Search" id="SearchStr" name="SearchStr" class="search-bar" />
             </form>
         </li>
         <li>
@@ -24,7 +24,7 @@ else
     <ul class="nav navbar-nav navbar-right">
         <li class="search-bar-container">
             <form method="post" action="/Search/Index" id="SearchForm">
-                <input type="text" value="Search" id="SearchStr" name="SearchStr" class="search-bar" />
+                <input type="text" placeholder="Search" id="SearchStr" name="SearchStr" class="search-bar" />
             </form>
         </li>
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>

@@ -33,13 +33,28 @@
                 <table class="section-table" border="1">
                     <caption>
                         <ul class="collapsed-list">
-                            <li style="float: left;">@category.Name</li>
+                            <li style="float: left;"><a href="/Categories/Show/@category.CategoryId">@category.Name</a></li>
                             <li style="float: right;"><a href="/Subjects/New/@category.CategoryId">Add a new subject</a></li>
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <li style="float: right;"><a href="/Subjects/Edit/@category.CategoryId">Edit</a></li>
+                                <li style="float: right;">
+                                    <form id="delete-form-@category.CategoryId" method="post" action="/Subjects/Delete/@category.CategoryId">
+                                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                        <a href="#" onclick="document.getElementById('delete-form-@category.CategoryId').submit()">Delete</a>
+                                    </form>
+                                </li>
+                            }
                         </ul>
                     </caption>
                     <tbody>
+                        @{ 
+                            var i = 0;
+                            var max = Math.Min(5, category.Subjects.Count);
+                        }
                         @foreach (var subject in category.Subjects)
                         {
+                            ++i;
                             <tr class="subject">
                                 <td class="subject-icon text-center"><img src="https://forum.softpedia.com//public/style_images/classic/f_icon_read.png"></td>
                                 <td class="subject-content">
@@ -58,6 +73,10 @@
                                     </ul>
                                 </td>
                             </tr>
+                            if (i == max)
+                            {
+                                break;
+                            }
                         }
                     </tbody>
                 </table>
