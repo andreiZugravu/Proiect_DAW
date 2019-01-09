@@ -1,51 +1,71 @@
 ﻿<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
 
+<style>
+    .subject-icon {
+        width: 3%;
+    }
+
+    .subject-content {
+        width: 70%;
+    }
+
+    .subject-stats {
+        width: 12%;
+    }
+
+    .subject-recent {
+        width: 15%;
+    }
+
+    .subject-title {
+        margin-bottom: 0;
+    }
+</style>   
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="container main-container">
+    <div class="sections">
+        @foreach (var category in ViewBag.Categories) {
+            <div class="row">
+                <table class="section-table" border="1">
+                    <caption>
+                        <ul class="collapsed-list">
+                            <li style="float: left;">@category.Name</li>
+                            <li style="float: right;"><a href="/Subjects/New/@category.CategoryId">Add a new subject</a></li>
+                        </ul>
+                    </caption>
+                    <tbody>
+                        @foreach (var subject in category.Subjects)
+                        {
+                            <tr class="subject">
+                                <td class="subject-icon text-center"><img src="https://forum.softpedia.com//public/style_images/classic/f_icon_read.png"></td>
+                                <td class="subject-content">
+                                    <p class="subject-title"><a href="/Subjects/Show/@subject.SubjectId">@subject.Title</a></p>
+                                </td>
+                                <td class="subject-stats">
+                                    <ul class="list-no-style">
+                                        <li>@subject.Replies.Count replies</li>
+                                        <li>@subject.NumberOfViews views</li>
+                                    </ul>
+                                </td>
+                                <td class="subject-recent">
+                                    <ul class="list-no-style">
+                                        <li><a href="#">@subject.User.UserName</a></li>
+                                        <li>@subject.Data</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
 
-@foreach (var category in ViewBag.Categories)
-{
-    <h3>
-        <!--<a class="toggle right" href="#" title="Toggle Soft Related / OS">Toggle Soft Related / OS</a> <span class="glyph">▶</span> --> 
-        <a href="/Categories/Show?id=@category.CategoryId" title="View subjects in this category">@category.Name</a>
-    </h3>
-    int nrSubjects = 0;
-    int limit = 5;
-    <table class="display-table">
-        <tbody>
-            @foreach (var subject in category.Subjects)
-            {
-                nrSubjects = nrSubjects + 1;
-                if (nrSubjects > limit)
-                { break; }
-                int contentLimit = 50;
-                string subjectContentDisplay = subject.Content;
-                if (subjectContentDisplay.Length > contentLimit)
-                {
-                    subjectContentDisplay = subject.Content.Substring(0, contentLimit);
-                    subjectContentDisplay = subjectContentDisplay + "...";
-                }
-                <tr>
-                    <td class="td-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Color_icon_blue.svg" height="42" width="42">
-                    </td>
-                    <td class="td-details">
-                        <h1>@subject.Title</h1>
-                        <p>@subjectContentDisplay</p>
-                        <p>Owner: <b>@subject.User.UserName</b></p>
-                    </td>
-                    <td class="td-statistics">
-                        <p>Number of views : @subject.NumberOfViews</p>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <br />
-}
 @if (User.IsInRole("Administrator"))
 {
     <a href="/Categories/New">Add a new category</a>

@@ -23,6 +23,7 @@ namespace Proiect_DAW.Controllers
             var subjects = from subject in db.Subjects
                            orderby subject.CategoryId
                            select subject;
+
             ViewBag.Subjects = subjects;
 
             return View();

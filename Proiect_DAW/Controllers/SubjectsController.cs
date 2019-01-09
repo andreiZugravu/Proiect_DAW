@@ -50,10 +50,10 @@ namespace Proiect_DAW.Controllers
         }
 
         [Authorize(Roles = "User,Editor,Administrator")]
-        public ActionResult New(int? CategoryId)
+        public ActionResult New(int? id)
         {
             ViewBag.CategoriesIds = db.Categories;
-            ViewBag.CategoryId = CategoryId;
+            ViewBag.CategoryId = id;
             return View();
         }
 
@@ -131,12 +131,12 @@ namespace Proiect_DAW.Controllers
                         subject.Data = System.DateTime.Now.ToString();
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
+                    return RedirectToAction("Show", new { id = subject.CategoryId });
                 }
                 else
                 {
                     TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
-                    return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
+                    return RedirectToAction("Show", new { id = subject.CategoryId });
                 }
             }
             catch (Exception e)
@@ -200,12 +200,12 @@ namespace Proiect_DAW.Controllers
             {
                 db.Subjects.Remove(subject);
                 db.SaveChanges();
-                return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
+                return RedirectToAction("Index", "Categories", new { id = subject.CategoryId });
             }
             else
             {
                 TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
-                return RedirectToAction("Show", "Categories", new { id = subject.CategoryId });
+                return RedirectToAction("Index", "Categories", new { id = subject.CategoryId });
             }
         }
 
