@@ -26,83 +26,97 @@
     var replies = ViewBag.Replies;
 }
 
-<div class="row">
-    <div class="col-md-12">
-        <h1>@ViewBag.Subject.Title</h1>
-        <p><a href="/Categories/Show/@category.CategoryId">@category.Name</a></p>
+<div class="container main-container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>@ViewBag.Subject.Title</h1>
+            <p><a href="/Categories/Show/@category.CategoryId">@category.Name</a></p>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <table class="section-table" border="1">
-        <caption>
-            <ul class="collapsed-list">
-                <li style="float: left">@replies.Count replies to this topic</li>
-                @if (ViewBag.Subject.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
-                {
-                    <li style="float: right;"><a href="/Subjects/Edit/@subject.SubjectId">Edit</a></li>
-                    <li style="float: right;">
-                        <form id="delete-form" method="post" action="/Subjects/Delete/@subject.SubjectId">
-                            @Html.HttpMethodOverride(HttpVerbs.Delete)
-                            <a href="#" onclick="document.getElementById('delete-form').submit()">Delete</a>
-                        </form>
-                    </li>
-                }
-            </ul>
-        </caption>
-        <tbody>
-            <tr>
-                <td class="reply-user">
-                    <a href="#">@subject.User.UserName</a>
-                    @*<p>Posts: @ViewBag.Subject.User.Subjects.Count()</p>*@
-                    @*<p>Registered: 27/05/1990</p>*@
-                </td>
-                <td class="reply-text">
-                    <p>Posted: @ViewBag.Subject.Data</p>
-                    @ViewBag.Subject.Content
-                </td>
-            </tr>
-            @foreach (var reply in ViewBag.Replies)
-            {
+    <div class="row">
+        <table class="section-table" border="1">
+            <caption>
+                <ul class="collapsed-list">
+                    <li style="float: left">@replies.Count replies to this topic</li>
+                    @if (ViewBag.Subject.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+                    {
+                        <li style="float: right;"><a href="/Subjects/Edit/@subject.SubjectId">Edit</a></li>
+                        <li style="float: right;">
+                            <form id="delete-form" method="post" action="/Subjects/Delete/@subject.SubjectId">
+                                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                <a href="#" onclick="document.getElementById('delete-form').submit()">Delete</a>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            </caption>
+            <tbody>
                 <tr>
                     <td class="reply-user">
-                        <a href="#">@reply.User.UserName</a>
-                        <div>
-                            @if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
-                            {
-                                <a href="/Subjects/Reply_Edit/@reply.ReplyId">Edit reply</a>
-                                <form id="delete-reply-@reply.ReplyId" method="post" action="/Subjects/Reply_Delete/@reply.ReplyId">
-                                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-                                    <a href="#" onclick="document.getElementById('delete-reply-@reply.ReplyId').submit()">Delete reply</a>
-                                </form>
-                            }
-                        </div>
-
-                        @*<p>Posts: 2174</p>*@
+                        <a href="#">@subject.User.UserName</a>
+                        @*<p>Posts: @ViewBag.Subject.User.Subjects.Count()</p>*@
                         @*<p>Registered: 27/05/1990</p>*@
                     </td>
                     <td class="reply-text">
-                        <p>Posted: @reply.Data</p>
-                        @reply.Content
+                        <p>Posted: @ViewBag.Subject.Data</p>
+                        @ViewBag.Subject.Content
                     </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 
-    @if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator")) //trebuie sa fie logat ca sa poata da reply
-    { //this.User.IsInRole
-        <br />
-        <form action="/Subjects/Reply_New" method="post">
-            <input type="hidden" name="SubjectId" value="@subject.SubjectId" />
-            <div class="col-sm-12" style="padding-left:0px">
-                <textarea name="Content" rows="8" cols="80" id="Reply_Content" style="font-family:sans-serif;font-size:1.2em;">Hey... say something!</textarea>
-            </div>
-            <button type="submit">Reply</button>
-        </form>
-    }
-    else
-    {
-        <p>You must be logged in to reply.</p>
-    }
+    <div class="row">
+        <table class="section-table" border="1">
+            <tbody>
+                @foreach (var reply in ViewBag.Replies)
+                {
+                    <tr>
+                        <td class="reply-user">
+                            <a href="#">@reply.User.UserName</a>
+                            <div>
+                                @if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
+                                {
+                                    <a href="/Subjects/Reply_Edit/@reply.ReplyId">Edit reply</a>
+                                    <form id="delete-reply-@reply.ReplyId" method="post" action="/Subjects/Reply_Delete/@reply.ReplyId">
+                                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                        <a href="#" onclick="document.getElementById('delete-reply-@reply.ReplyId').submit()">Delete reply</a>
+                                    </form>
+                                }
+                            </div>
+
+                            @*<p>Posts: 2174</p>*@
+                            @*<p>Registered: 27/05/1990</p>*@
+                        </td>
+                        <td class="reply-text">
+                            <p>Posted: @reply.Data</p>
+                            @reply.Content
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="col-sm-12 text-center">
+            @Html.PagedListPager((IPagedList)ViewBag.Replies, page => Url.Action("Show", "Subjects", new { id = ViewBag.Subject.SubjectId, page }))
+            Showing @ViewBag.Replies.FirstItemOnPage to @ViewBag.Replies.LastItemOnPage of @ViewBag.Replies.TotalItemCount replies
+        </div>
+
+        @if (User.IsInRole("User") || User.IsInRole("Editor") || User.IsInRole("Administrator")) //trebuie sa fie logat ca sa poata da reply
+        { //this.User.IsInRole
+            <br />
+            <form action="/Subjects/Reply_New" method="post">
+                <input type="hidden" name="SubjectId" value="@subject.SubjectId" />
+                <div class="col-sm-12" style="padding-left:0px">
+                    <textarea name="Content" rows="8" cols="80" id="Reply_Content" style="font-family:sans-serif;font-size:1.2em;">Hey... say something!</textarea>
+                </div>
+                <button type="submit">Reply</button>
+            </form>
+        }
+        else
+        {
+            <p>You must be logged in to reply.</p>
+        }
+    </div>
 </div>

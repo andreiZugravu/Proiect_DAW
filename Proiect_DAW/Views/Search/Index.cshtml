@@ -65,7 +65,7 @@
                     }
                 </tbody>
             </table>
-            <div class="col-sm-12">
+            <div class="col-sm-12 text-center">
                 @Html.PagedListPager((IPagedList)ViewBag.Subjects, pageSubject => Url.Action("Index", "Search", new { SearchStr = ViewBag.SearchStr, pageSubject }))
                 Showing @ViewBag.Subjects.FirstItemOnPage to @ViewBag.Subjects.LastItemOnPage of @ViewBag.Subjects.TotalItemCount subjects
             </div>
@@ -98,7 +98,7 @@
                     }
                 </tbody>
             </table>
-            <div class="col-sm-12">
+            <div class="col-sm-12 text-center">
                 @Html.PagedListPager((IPagedList)ViewBag.Replies, pageReply => Url.Action("Index", "Search", new { SearchStr = ViewBag.SearchStr, pageReply }))
                 Showing @ViewBag.Replies.FirstItemOnPage to @ViewBag.Replies.LastItemOnPage of @ViewBag.Replies.TotalItemCount subjects
             </div>

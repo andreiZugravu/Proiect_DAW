@@ -64,7 +64,7 @@
                     }
                 </tbody>
             </table>
-            <div class="col-sm-12">
+            <div class="col-sm-12 text-center">
                 @Html.PagedListPager((IPagedList)ViewBag.Subjects, page => Url.Action("Show", "Categories", new { id = category.CategoryId, page }))
                 Showing @ViewBag.Subjects.FirstItemOnPage to @ViewBag.Subjects.LastItemOnPage of @ViewBag.Subjects.TotalItemCount subjects
             </div>
