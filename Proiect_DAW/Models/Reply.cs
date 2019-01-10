@@ -10,6 +10,7 @@ namespace Proiect_DAW.Models
     {
         [Key]
         public int ReplyId { get; set; }
+        [Required, MinLength(3)]
         public string Content { get; set; }
         public string Data { get; set; }
         public int SubjectId { get; set; }
