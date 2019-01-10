@@ -37,11 +37,62 @@
                 <caption>
                     <ul class="collapsed-list">
                         <li style="float: left;">@category.Name</li>
-                        <li style="float: right;"><a href="/Subjects/New/@category.CategoryId">Add a new subject</a></li>
+                        <form method="get" action="/Categories/Show">
+                            <input type="hidden" name="id" value="@category.CategoryId" />
+                            <li style="float: left;">
+                                <div class="form-group">
+                                    <label for="Field">Sort by</label>
+                                    <select name="Field">
+                                        @if (ViewBag.Field == "Title")
+                                        {
+                                            <option value="Title" selected>Title</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Title">Title</option>
+                                        }
+                                        @if (ViewBag.Field == "Data")
+                                        {
+                                            <option value="Data" selected>Data</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Data">Data</option>
+                                        }
+                                    </select>
+                                </div>
+                            </li>
+                            <li style="float: left;">
+                                <div class="form-group">
+                                    <label for="Order">Order</label>
+                                    <select name="Order">
+                                        @if (ViewBag.Order == "Ascending")
+                                        {
+                                            <option value="Ascending" selected>Ascending</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Ascending">Ascending</option>
+                                        }
+                                        @if (ViewBag.Order == "Descending")
+                                        {
+                                            <option value="Descending" selected>Descending</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Descending">Descending</option>
+                                        }
+                                    </select>
+                                </div>
+                            </li>
+                            <li style="float: left;"><button type="submit">Sort</button></li>
+                        </form>
+
+                            <li style="float: right;"><a href="/Subjects/New/@category.CategoryId">Add a new subject</a></li>
                     </ul>
                 </caption>
                 <tbody>
-                    @foreach (var subject in category.Subjects)
+                    @foreach (var subject in ViewBag.Subjects)
                     {
                         <tr class="subject">
                             <td class="subject-icon text-center"><img src="https://forum.softpedia.com//public/style_images/classic/f_icon_read.png"></td>
