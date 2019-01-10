@@ -12,6 +12,8 @@ namespace Proiect_DAW.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        public string UserName { get; set; }
     }
 
     public class ManageLoginsViewModel
@@ -56,6 +58,13 @@ namespace Proiect_DAW.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class ChangeUsername
+    {
+        [Display(Name = "New username")]
+        [Required, MinLength(3)]
+        public string UserName { get; set; }
     }
 
     public class AddPhoneNumberViewModel
