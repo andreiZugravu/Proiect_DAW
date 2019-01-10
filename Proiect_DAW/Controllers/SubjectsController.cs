@@ -143,12 +143,12 @@ namespace Proiect_DAW.Controllers
                         subject.Data = System.DateTime.Now.ToString();
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Show", new { id = subject.CategoryId });
+                    return RedirectToAction("Show", new { id = subject.SubjectId });
                 }
                 else
                 {
                     TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
-                    return RedirectToAction("Show", new { id = subject.CategoryId });
+                    return RedirectToAction("Show", new { id = subject.SubjectId });
                 }
             }
             catch (Exception e)
