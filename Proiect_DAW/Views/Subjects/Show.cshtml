@@ -54,7 +54,7 @@
             <tbody>
                 <tr>
                     <td class="reply-user">
-                        <a href="#">@subject.User.UserName</a>
+                        <span style="font-weight:bold;">@subject.User.UserName</span>
                         @*<p>Posts: @ViewBag.Subject.User.Subjects.Count()</p>*@
                         @*<p>Registered: 27/05/1990</p>*@
                     </td>
@@ -74,7 +74,7 @@
                 {
                     <tr>
                         <td class="reply-user">
-                            <a href="#">@reply.User.UserName</a>
+                            <span style="font-weight:bold;">@reply.User.UserName</span>
                             <div>
                                 @if (reply.UserId == User.Identity.GetUserId() || User.IsInRole("Editor") || User.IsInRole("Administrator"))
                                 {
