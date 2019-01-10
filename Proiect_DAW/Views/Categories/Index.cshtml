@@ -37,9 +37,9 @@
                             <li style="float: right;"><a href="/Subjects/New/@category.CategoryId">Add a new subject</a></li>
                             @if (User.IsInRole("Administrator"))
                             {
-                                <li style="float: right;"><a href="/Subjects/Edit/@category.CategoryId">Edit</a></li>
+                                <li style="float: right;"><a href="/Categories/Edit/@category.CategoryId">Edit</a></li>
                                 <li style="float: right;">
-                                    <form id="delete-form-@category.CategoryId" method="post" action="/Subjects/Delete/@category.CategoryId">
+                                    <form id="delete-form-@category.CategoryId" method="post" action="/Categories/Delete/@category.CategoryId">
                                         @Html.HttpMethodOverride(HttpVerbs.Delete)
                                         <a href="#" onclick="document.getElementById('delete-form-@category.CategoryId').submit()">Delete</a>
                                     </form>

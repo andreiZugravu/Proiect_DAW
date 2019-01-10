@@ -6,6 +6,7 @@
 <h2>Create a new subject</h2>
 
 <form method="post" action="New">
+    @Html.ValidationSummary("", new { @class = "text-danger" })
     <label for="Title">Title</label>
     <br />
     <input name="Title" id="TextTitle" type="text" />

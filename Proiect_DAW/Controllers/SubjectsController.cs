@@ -63,15 +63,27 @@ namespace Proiect_DAW.Controllers
         {
             try
             {
-                subject.Data = System.DateTime.Now.ToString();
-                subject.UserId = User.Identity.GetUserId();
-                subject.NumberOfViews = 0;
-                db.Subjects.Add(subject);
-                db.SaveChanges();
-                return RedirectToAction("Show", new { id = subject.SubjectId });
+                if (ModelState.IsValid)
+                {
+                    subject.Data = System.DateTime.Now.ToString();
+                    subject.UserId = User.Identity.GetUserId();
+                    subject.NumberOfViews = 0;
+                    db.Subjects.Add(subject);
+                    db.SaveChanges();
+                    return RedirectToAction("Show", new { id = subject.SubjectId });
+                }
+                else
+                {
+                    ViewBag.CategoriesIds = db.Categories;
+                    ViewBag.CategoryId = subject.CategoryId;
+                    return View();
+                }
+                
             }
             catch (Exception e)
             {
+                ViewBag.CategoriesIds = db.Categories;
+                ViewBag.CategoryId = subject.CategoryId;
                 return View();
             }
         }
